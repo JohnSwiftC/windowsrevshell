@@ -62,6 +62,12 @@ int main(int argc, char* argv[]) {
 
 	remoteDesk = accept(sockfd, (struct sockaddr*)&remoteaddr, &sin_size);
 
+	// Tell client which process to open
+
+	char opt[30];
+	printf("Choose process (ex: cmd) ");
+	gets(opt);
+	send(remoteDesk, opt, sizeof opt, 0);
 
 	char buf[10000];
 	char message[4096];
